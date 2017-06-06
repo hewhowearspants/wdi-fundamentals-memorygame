@@ -23,17 +23,25 @@ var cardsInPlay = [];
 	}
 ];*/
 
+// generates a random number between 1 and a given number
 function generateSeed(number) {
 	return Math.ceil(Math.random() * number);
 }
 
+// fills cards array with cards in random order
+// hardcoded for 4 cards
 function populateCards() {
 	var usedSeeds = [];
 	var i = 0;
+	// will only add 4 cards
 	while (i < 4) {
+		// generate a random card seed between 1 and 4
 		var cardSeed = generateSeed(4);
+		// if the generated seed hasn't already been generated before...
 		if (!usedSeeds.includes(cardSeed)) {
+			// add generated seed to list of used seeds
 			usedSeeds.push(cardSeed);
+			// add card object to cards array based on generated seed
 			switch(cardSeed) {
 				case 1: cards.push({
 					rank: 'queen', 
@@ -55,6 +63,7 @@ function populateCards() {
 					suit: 'diamonds',
 					cardImage: 'images/king-of-diamonds.png'});
 			};
+			// iterates only when an unique card has been added
 			i++;
 		};
 	};
