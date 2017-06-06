@@ -1,41 +1,6 @@
-function populateCards(numOfCards) {
-	var cards = [];
-	var i = 0;
-	//need an even number of cards, dummy
-	if (numOfCards % 2 !== 0) {
-		return 'Please use an even number of cards';
-	};
-	//until the number of cards has been filled 
-	while (i < numOfCards) {
-		//generate a random number
-		var cardSeed = Math.floor(Math.random() * 2);
-		//0 is queen, 1 is king
-		var card = cardSeed === 0 ? 'queen' : 'king';
-		//if there are less than two of that card 
-		if (!enoughCards(cards, card)) {
-			//push the card to the cards array
-			cards.push(card);
-			i++;
-		};
-	};
-	return cards;
-}
-
-function enoughCards(cards, card) {
-	var cardCount = 0;
-	//for each card currently in the cards array
-	for (var j = 0; j < cards.length; j++) {
-		// if the card in the array is equal to the random card generated
-		if (cards[j] === card) {
-			cardCount++;
-		}
-	}
-	// return if the number of cards has reached two
-	return cardCount === 2;
-}
-
-//var cards = populateCards(4);
-var cards = [
+var cards = [];
+var cardsInPlay = [];
+/*var cards = [
 	{
 		rank: 'queen',
 		suit: 'hearts',
@@ -56,9 +21,44 @@ var cards = [
 		suit: 'diamonds',
 		cardImage: 'images/king-of-diamonds.png'
 	}
-];
+];*/
 
-var cardsInPlay = [];
+function generateSeed(number) {
+	return Math.ceil(Math.random() * number);
+}
+
+function populateCards() {
+	var usedSeeds = [];
+	var i = 0;
+	while (i < 4) {
+		var cardSeed = generateSeed(4);
+		if (!usedSeeds.includes(cardSeed)) {
+			usedSeeds.push(cardSeed);
+			switch(cardSeed) {
+				case 1: cards.push({
+					rank: 'queen', 
+					suit: 'hearts',
+					cardImage: 'images/queen-of-hearts.png'});
+					break;
+				case 2: cards.push({
+					rank: 'queen',
+					suit: 'diamonds',
+					cardImage: 'images/queen-of-diamonds.png'});
+					break;
+				case 3: cards.push({
+					rank: 'king',
+					suit: 'hearts',
+					cardImage: 'images/king-of-hearts.png'});
+					break;
+				case 4: cards.push({
+					rank: 'king',
+					suit: 'diamonds',
+					cardImage: 'images/king-of-diamonds.png'});
+			};
+			i++;
+		};
+	};
+}
 
 function checkForMatch() {
 	if (cardsInPlay.length === 2) {
@@ -77,6 +77,8 @@ function flipCard(cardId) {
 	console.log(cards[cardId].suit);
 	checkForMatch();
 }
+
+populateCards();
 
 flipCard(0);
 flipCard(2);
