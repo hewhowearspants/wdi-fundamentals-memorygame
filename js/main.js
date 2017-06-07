@@ -1,6 +1,6 @@
 var cards = [];
 var cardsInPlay = [];
-/*var cards = [
+var cardDeck = [
 	{
 		rank: 'queen',
 		suit: 'hearts',
@@ -21,51 +21,23 @@ var cardsInPlay = [];
 		suit: 'diamonds',
 		cardImage: 'images/king-of-diamonds.png'
 	}
-];*/
+];
 
-// generates a random number between 1 and a given number
+// generates a random number between 0 (inclusive) and a given number (not inclusive)
 function generateSeed(number) {
-	return Math.ceil(Math.random() * number);
+	return Math.floor(Math.random() * number);
 }
 
-// fills cards array with cards in random order
-// hardcoded for 4 cards
-function populateCards() {
-	var usedSeeds = [];
-	var i = 0;
-	// will only add 4 cards
-	while (i < 4) {
-		// generate a random card seed between 1 and 4
-		var cardSeed = generateSeed(4);
-		// if the generated seed hasn't already been generated before...
-		if (!usedSeeds.includes(cardSeed)) {
-			// add generated seed to list of used seeds
-			usedSeeds.push(cardSeed);
-			// add card object to cards array based on generated seed
-			switch(cardSeed) {
-				case 1: cards.push({
-					rank: 'queen', 
-					suit: 'hearts',
-					cardImage: 'images/queen-of-hearts.png'});
-					break;
-				case 2: cards.push({
-					rank: 'queen',
-					suit: 'diamonds',
-					cardImage: 'images/queen-of-diamonds.png'});
-					break;
-				case 3: cards.push({
-					rank: 'king',
-					suit: 'hearts',
-					cardImage: 'images/king-of-hearts.png'});
-					break;
-				case 4: cards.push({
-					rank: 'king',
-					suit: 'diamonds',
-					cardImage: 'images/king-of-diamonds.png'});
-			};
-			// iterates only when an unique card has been added
-			i++;
-		};
+// fills cards array with cards from the cardDeck in random order
+function randomizeCards() {
+	// as long as cardDeck still has cards in it...
+	while (cardDeck.length > 0) {
+		var numCards = cardDeck.length;
+		// generate a random card index to pull from the cardDeck...
+		var cardSeed = generateSeed(numCards);
+		// pull the random card from the deck and
+		// push it into the cards array
+		cards.push(cardDeck.splice(cardSeed, 1)[0]);
 	};
 }
 
@@ -87,7 +59,7 @@ function flipCard(cardId) {
 	checkForMatch();
 }
 
-populateCards();
+randomizeCards();
 
 flipCard(0);
 flipCard(2);
