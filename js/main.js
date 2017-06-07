@@ -30,13 +30,12 @@ function randomizeCards() {
 		suit: 'diamonds',
 		cardImage: 'images/king-of-diamonds.png'
 	}];
-
 	// as long as cardDeck still has cards in it...
 	while (cardDeck.length > 0) {
 		var numCards = cardDeck.length;
 		// generate a random card index to pull from the cardDeck...
 		var cardSeed = generateSeed(numCards);
-		// pull the random card from the deck and
+		// pull the random card from the cardDeck and
 		// push it into the cards array
 		cards.push(cardDeck.splice(cardSeed, 1)[0]);
 	};
@@ -44,8 +43,9 @@ function randomizeCards() {
 
 function checkForMatch() {
 	var messageBox = document.getElementById('message-box');
+	
 	if (cardsInPlay.length === 2) {
-		if (cardsInPlay[0] === cardsInPlay[1]) {
+		if (cardsInPlay[0].rank === cardsInPlay[1].rank) {
 			messageBox.innerHTML = '<h3>Match!</h3>';
 			messageBox.className = 'fadein';
 			setTimeout(function(){
@@ -67,10 +67,16 @@ function checkForMatch() {
 
 function flipCard() {
 	var cardId = this.getAttribute('data-id');
-	console.log('User flipped ' + cards[cardId].rank);
-	cardsInPlay.push(cards[cardId].rank);
-	console.log(cards[cardId].cardImage);
-	console.log(cards[cardId].suit);
+	// don't flip card if card is already flipped
+	for (var i = 0; i < cardsInPlay.length; i++) {
+		if (cardsInPlay[i].rank === cards[cardId].rank && cardsInPlay[i].suit == cards[cardId].suit) {
+			return;
+		}
+	}
+	//console.log('User flipped ' + cards[cardId].rank);
+	cardsInPlay.push(cards[cardId]);
+	//console.log(cards[cardId].cardImage);
+	//console.log(cards[cardId].suit);
 	this.setAttribute('src', cards[cardId].cardImage);
 	checkForMatch();
 }
