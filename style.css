@@ -60,14 +60,26 @@ h2 {
 	text-transform: uppercase;
 }
 
-/*h3 {
+h3 {
 	font-family: "Raleway", sans-serif;
 	color: #F15B31;
 	letter-spacing: 1px;
 	font-weight: 500;
 	font-size: 18px;
 	text-transform: uppercase;
-}*/
+}
+
+button {
+	border: none;
+	border-radius: 6px;
+	background-color: #F15B31;
+	color: #0D2C40;
+	font-size: 16px;
+	padding: 10px 20px;
+	text-decoration: none;
+	cursor: pointer;
+	text-transform: uppercase;
+}
 
 p {
 	font-family: "Droid Serif", serif;
@@ -120,4 +132,14 @@ img {
 .name {
 	color: #F15B31;
 	font-weight: 700;
+}
+
+.fadeout {
+	opacity: 0;
+	transition: opacity .5s ease-in-out;
+}
+
+.fadein {
+	opacity: 1;
+	transition: opacity .1s ease-in;
 }

@@ -1,6 +1,15 @@
 var cards = [];
 var cardsInPlay = [];
-var cardDeck = [
+
+// generates a random number between 0 (inclusive) and a given number (not inclusive)
+function generateSeed(number) {
+	return Math.floor(Math.random() * number);
+}
+
+// fills cards array with cards from the cardDeck in random order
+function randomizeCards() {
+	cards = [];
+	var cardDeck = [
 	{
 		rank: 'queen',
 		suit: 'hearts',
@@ -20,16 +29,8 @@ var cardDeck = [
 		rank: 'king',
 		suit: 'diamonds',
 		cardImage: 'images/king-of-diamonds.png'
-	}
-];
+	}];
 
-// generates a random number between 0 (inclusive) and a given number (not inclusive)
-function generateSeed(number) {
-	return Math.floor(Math.random() * number);
-}
-
-// fills cards array with cards from the cardDeck in random order
-function randomizeCards() {
 	// as long as cardDeck still has cards in it...
 	while (cardDeck.length > 0) {
 		var numCards = cardDeck.length;
@@ -42,25 +43,59 @@ function randomizeCards() {
 }
 
 function checkForMatch() {
+	var messageBox = document.getElementById('message-box');
 	if (cardsInPlay.length === 2) {
 		if (cardsInPlay[0] === cardsInPlay[1]) {
-			console.log('You found a match!');
+			messageBox.innerHTML = '<h3>Match!</h3>';
+			messageBox.className = 'fadein';
+			setTimeout(function(){
+				messageBox.className = 'fadeout';
+			}, 500);
 		} else {
-			console.log('Sorry, try again');
-		}
-	}
+			messageBox.innerHTML = '<h3>Try Again!</h3>';
+			messageBox.className = 'fadein';
+			setTimeout(function(){
+				messageBox.className = 'fadeout';
+			}, 500);
+			for (var i = 0; i < cards.length; i++) {
+				document.getElementsByTagName('img')[i].setAttribute('src', 'images/back.png');
+			};
+		};
+		cardsInPlay = [];
+	};
 }
 
-function flipCard(cardId) {
+function flipCard() {
+	var cardId = this.getAttribute('data-id');
 	console.log('User flipped ' + cards[cardId].rank);
 	cardsInPlay.push(cards[cardId].rank);
 	console.log(cards[cardId].cardImage);
 	console.log(cards[cardId].suit);
+	this.setAttribute('src', cards[cardId].cardImage);
 	checkForMatch();
 }
 
-randomizeCards();
+function createBoard() {
+	randomizeCards();
+	for (var i = 0; i < cards.length; i++) {
+		var cardElement = document.createElement('img');
+		cardElement.setAttribute('src', 'images/back.png');
+		cardElement.setAttribute('data-id', i);
+		cardElement.addEventListener('click', flipCard);
+		document.getElementById('game-board').appendChild(cardElement);
+	};
+}
 
-flipCard(0);
-flipCard(2);
+function resetBoard() {
+	cardsInPlay = [];
+	randomizeCards();
+	for (var i = 0; i < cards.length; i++) {
+		var card = document.getElementsByTagName('img')[i];
+		card.setAttribute('src', 'images/back.png');
+	};
+}
+
+createBoard();
+
+document.querySelector('button').addEventListener('click', resetBoard);
 
