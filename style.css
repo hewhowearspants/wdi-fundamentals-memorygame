@@ -143,3 +143,10 @@ img {
 	opacity: 1;
 	transition: opacity .1s ease-out;
 }
+
+.hotspot {
+	height: 0;
+	width: 0;
+	margin: 0;
+	letter-spacing: 0;
+}

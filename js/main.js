@@ -1,5 +1,6 @@
 var cards = [];
 var cardsInPlay = [];
+var cardMatches = [];
 
 // generates a random number between 0 (inclusive) and a given number (not inclusive)
 function generateSeed(number) {
@@ -46,6 +47,10 @@ function checkForMatch() {
 	
 	if (cardsInPlay.length === 2) {
 		if (cardsInPlay[0].rank === cardsInPlay[1].rank) {
+			// store matches in cardMatches array
+			cardsInPlay.forEach(function(card) {
+				cardMatches.push(card);
+			});
 			messageBox.innerHTML = '<h3>Match!</h3>';
 			messageBox.className = 'fadein';
 			setTimeout(function(){
@@ -61,22 +66,26 @@ function checkForMatch() {
 				document.getElementsByTagName('img')[i].setAttribute('src', 'images/back.png');
 			};
 		};
+		// reset cards in play
 		cardsInPlay = [];
 	};
 }
 
 function flipCard() {
 	var cardId = this.getAttribute('data-id');
-	// don't flip card if card is already flipped
+	// don't 'flip' card if card is already flipped
 	for (var i = 0; i < cardsInPlay.length; i++) {
-		if (cardsInPlay[i].rank === cards[cardId].rank && cardsInPlay[i].suit == cards[cardId].suit) {
+		if (cardsInPlay[i].rank === cards[cardId].rank && cardsInPlay[i].suit === cards[cardId].suit) {
 			return;
-		}
-	}
-	//console.log('User flipped ' + cards[cardId].rank);
+		};
+	};
+	// don't 'flip' card if card has already been matched
+	for (var i = 0; i < cardMatches.length; i++) {
+		if (cardMatches[i].rank === cards[cardId].rank && cardMatches[i].suit === cards[cardId].suit) {
+			return;
+		};
+	};
 	cardsInPlay.push(cards[cardId]);
-	//console.log(cards[cardId].cardImage);
-	//console.log(cards[cardId].suit);
 	this.setAttribute('src', cards[cardId].cardImage);
 	checkForMatch();
 }
@@ -94,6 +103,7 @@ function createBoard() {
 
 function resetBoard() {
 	cardsInPlay = [];
+	cardMatches = [];
 	randomizeCards();
 	for (var i = 0; i < cards.length; i++) {
 		var card = document.getElementsByTagName('img')[i];
